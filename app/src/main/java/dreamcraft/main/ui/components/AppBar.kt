@@ -24,9 +24,7 @@ fun AppBar(title: String, withSettingsButton: Boolean = false) {
     val companyName = stringResource(R.string.company_name)
     val settingsBtnAltText = stringResource(R.string.settings)
     val logo = painterResource(R.drawable.gm_logo)
-    val buttonModifier = Modifier
-        .width(btnSize)
-        .height(btnSize)
+    val buttonModifier = Modifier.width(btnSize).height(btnSize)
 
     Column() {
         Row(
@@ -65,7 +63,7 @@ fun AppBar(title: String, withSettingsButton: Boolean = false) {
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
+fun AppBarPreview() {
     GMSignInTheme {
         AppBar(title = stringResource(R.string.main_title), withSettingsButton = true)
     }
