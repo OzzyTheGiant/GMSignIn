@@ -21,11 +21,11 @@ import dreamcraft.main.viewmodels.FormViewModel
 fun Form(vm: FormViewModel = viewModel(), onSubmit: () -> Unit) {
     val screenPadding = dimensionResource(R.dimen.padding_text_field)
     val buttonWidth = dimensionResource(R.dimen.max_button_width)
+    val visitPurposeLabel = stringResource(R.string.visit_purpose)
     val dropOffLabel = stringResource(R.string.drop_off)
     val pickUpLabel = stringResource(R.string.pick_up)
     val commentsLabel = stringResource(R.string.comments)
     val buttonLabel = stringResource(R.string.submit)
-    var showVisitPurposeOptions by remember { mutableStateOf(false) }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -39,28 +39,15 @@ fun Form(vm: FormViewModel = viewModel(), onSubmit: () -> Unit) {
             vm.formData = vm.formData.copy(full_name = it)
         }
 
-        AppTextField(
-            label="Visit Purpose",
+        SelectField(
+            label = visitPurposeLabel,
+            options = VisitPurpose.values(),
             value = vm.formData.visit_purpose,
             padding = screenPadding,
-            selectable = true
-        ) {
-            vm.formData = vm.formData.copy(visit_purpose = it)
-        }
-
-        DropdownMenu(
-            expanded = showVisitPurposeOptions,
-            onDismissRequest = { showVisitPurposeOptions = false }
-        ) {
-            for (value in VisitPurpose.values()) {
-                DropdownMenuItem(onClick = {
-                    vm.formData = vm.formData.copy(visit_purpose = value.toString())
-                    showVisitPurposeOptions = false
-                }) {
-                    Text(value.toString())
-                }
-            }
-        }
+            expanded = vm.showVisitPurposeOptions,
+            onChange = { vm.formData = vm.formData.copy(visit_purpose = it) },
+            onToggle = vm::toggleVisitPurposeOptions
+        )
 
         Row(Modifier.fillMaxWidth()) {
             AppCheckBox(dropOffLabel, vm.formData.drop_off) {

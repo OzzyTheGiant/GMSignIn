@@ -8,8 +8,9 @@ import dreamcraft.main.models.ClientSignInEntry
 
 class FormViewModel : ViewModel() {
     public var formData by mutableStateOf(ClientSignInEntry())
+    public var showVisitPurposeOptions by mutableStateOf(false)
 
-    public fun updateFormData() {
-        this.formData = formData
+    public fun toggleVisitPurposeOptions() {
+        showVisitPurposeOptions = !showVisitPurposeOptions
     }
 }
