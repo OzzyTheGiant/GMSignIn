@@ -8,11 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import dreamcraft.main.models.ClientSignInEntry
 import dreamcraft.main.ui.components.AppBar
 import dreamcraft.main.ui.components.Form
 import dreamcraft.main.ui.theme.GMSignInTheme

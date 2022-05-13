@@ -4,16 +4,21 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 
 data class ClientSignInEntry (
-    var full_name: String = "",
-    var office: String = "",
-    var visit_purpose: String = "",
-    var drop_off: Boolean = false,
-    var pick_up: Boolean = false,
-    var comments: String? = null
+    val full_name: String = "",
+    val office: String = "",
+    val visit_purpose: String = "",
+    val visit_datetime: String = "",
+    val drop_off: Boolean = false,
+    val pick_up: Boolean = false,
+    val comments: String? = null
 ) {
-    lateinit var visit_datetime: String
-
-    public fun updateVisitDateTime() {
-        this.visit_datetime = SimpleDateFormat.getDateTimeInstance().format(Calendar.getInstance().time)
+    companion object {
+        @JvmStatic
+        public fun updateVisitDateTime(formData: ClientSignInEntry): ClientSignInEntry {
+            return formData.copy(visit_datetime = SimpleDateFormat
+                .getDateTimeInstance()
+                .format(Calendar.getInstance().time)
+            )
+        }
     }
 }

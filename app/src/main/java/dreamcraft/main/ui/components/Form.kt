@@ -3,19 +3,12 @@ package dreamcraft.main.ui.components
 import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowDropDown
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dreamcraft.main.R
 import dreamcraft.main.models.ClientSignInEntry
@@ -25,7 +18,7 @@ import dreamcraft.main.viewmodels.FormViewModel
 
 
 @Composable
-fun Form(formVM: FormViewModel = viewModel(), onSubmit: () -> Unit) {
+fun Form(vm: FormViewModel = viewModel(), onSubmit: () -> Unit) {
     val screenPadding = dimensionResource(R.dimen.padding_text_field)
     val buttonWidth = dimensionResource(R.dimen.max_button_width)
     val dropOffLabel = stringResource(R.string.drop_off)
@@ -40,21 +33,19 @@ fun Form(formVM: FormViewModel = viewModel(), onSubmit: () -> Unit) {
     ) {
         AppTextField(
             label = "Full Name",
-            value = formVM.formData.full_name,
+            value = vm.formData.full_name,
             padding = screenPadding
         ) {
-            formVM.formData.full_name = it
-            formVM.updateFormData()
+            vm.formData = vm.formData.copy(full_name = it)
         }
 
         AppTextField(
             label="Visit Purpose",
-            value = formVM.formData.visit_purpose,
+            value = vm.formData.visit_purpose,
             padding = screenPadding,
             selectable = true
         ) {
-            formVM.formData.visit_purpose = it
-            formVM.updateFormData()
+            vm.formData = vm.formData.copy(visit_purpose = it)
         }
 
         DropdownMenu(
@@ -63,7 +54,7 @@ fun Form(formVM: FormViewModel = viewModel(), onSubmit: () -> Unit) {
         ) {
             for (value in VisitPurpose.values()) {
                 DropdownMenuItem(onClick = {
-                    formVM.formData.visit_purpose = value.toString()
+                    vm.formData = vm.formData.copy(visit_purpose = value.toString())
                     showVisitPurposeOptions = false
                 }) {
                     Text(value.toString())
@@ -72,22 +63,24 @@ fun Form(formVM: FormViewModel = viewModel(), onSubmit: () -> Unit) {
         }
 
         Row(Modifier.fillMaxWidth()) {
-            AppCheckBox(dropOffLabel) {
-                formVM.formData.drop_off = it
-                formVM.updateFormData()
+            AppCheckBox(dropOffLabel, vm.formData.drop_off) {
+                vm.formData = vm.formData.copy(drop_off = it)
             }
 
             Spacer(Modifier.size(screenPadding * 2))
 
-            AppCheckBox(pickUpLabel) {
-                formVM.formData.pick_up = it
-                formVM.updateFormData()
+            AppCheckBox(pickUpLabel, vm.formData.pick_up) {
+                vm.formData = vm.formData.copy(pick_up = it)
             }
         }
 
-        AppTextField(label = commentsLabel, value = "", multiline = true, padding = screenPadding) {
-            formVM.formData.comments = it
-            formVM.updateFormData()
+        AppTextField(
+            label = commentsLabel,
+            value = if (vm.formData.comments != null) vm.formData.comments!! else "" ,
+            multiline = true,
+            padding = screenPadding
+        ) {
+            vm.formData = vm.formData.copy(comments = it)
         }
 
         Button(modifier = Modifier.width(buttonWidth), onClick = onSubmit) {
