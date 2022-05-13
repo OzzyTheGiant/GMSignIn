@@ -97,69 +97,6 @@ fun Form(formVM: FormViewModel = viewModel(), onSubmit: () -> Unit) {
 }
 
 
-@Composable
-fun AppTextField(
-    label: String,
-    value: String,
-    padding: Dp,
-    selectable: Boolean = false,
-    multiline: Boolean = false,
-    onChange: (String) -> Unit
-) {
-    val dropdownArrowAltText = stringResource(R.string.purpose_options)
-    val iconSize = dimensionResource(R.dimen.button_icon_size)
-    var modifier = Modifier.padding(padding).fillMaxWidth()
-
-    val colors = TextFieldDefaults.textFieldColors(
-        backgroundColor = MaterialTheme.colors.background,
-        cursorColor = MaterialTheme.colors.primary,
-        focusedIndicatorColor = MaterialTheme.colors.primaryVariant,
-        unfocusedIndicatorColor = MaterialTheme.colors.primary
-    )
-
-
-    if (multiline) modifier = modifier.height(dimensionResource(R.dimen.textbox_size))
-
-    if (multiline) OutlinedTextField(
-        value = "",
-        modifier = modifier,
-        colors = colors,
-        onValueChange = onChange,
-        label = { Text(label) }
-    )
-
-    else TextField(
-        value = value,
-        modifier = modifier,
-        colors = colors,
-        onValueChange = onChange,
-        label= { Text(label) },
-        trailingIcon = {
-            if (selectable) Icon(
-                imageVector = Icons.Rounded.ArrowDropDown,
-                contentDescription = dropdownArrowAltText,
-                tint = MaterialTheme.colors.primary,
-                modifier = Modifier.size(iconSize)
-            )
-        },
-    )
-}
-
-
-@Composable
-fun AppCheckBox(label: String, onChange: (Boolean) -> Unit) {
-    val screenPadding = dimensionResource(R.dimen.padding_text_field)
-
-    Row(
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Checkbox(checked = false, onCheckedChange = onChange)
-        Spacer(Modifier.size(screenPadding))
-        Text(label)
-    }
-}
-
-
 @Preview(showBackground = true)
 @Composable
 fun FormPreview(viewModel: FormViewModel = FormViewModel()) {
