@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">GM Sign In</string>
-    <string name="company_name"><![CDATA[\"Givilancz & Martinez, PLLC\"]]></string>
+    <string name="company_name">Givilancz and Martinez, PLLC</string>
     <string name="settings">Settings</string>
     <string name="main_title">Sign In</string>
     <string name="visit_purpose">Visit Purpose</string>
@@ -9,4 +9,5 @@
     <string name="pick_up">Pick Up</string>
     <string name="comments">Comments</string>
     <string name="submit">Submit</string>
+    <string name="required">{x} is required</string>
 </resources>

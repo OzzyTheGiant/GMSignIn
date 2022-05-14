@@ -34,9 +34,11 @@ fun Form(vm: FormViewModel = viewModel(), onSubmit: () -> Unit) {
         AppTextField(
             label = "Full Name",
             value = vm.formData.full_name,
-            padding = screenPadding
+            padding = screenPadding,
+            isInvalid = vm.isFullNameInvalid
         ) {
             vm.formData = vm.formData.copy(full_name = it)
+            vm.isFullNameFieldDirty = true
         }
 
         SelectField(
@@ -45,8 +47,9 @@ fun Form(vm: FormViewModel = viewModel(), onSubmit: () -> Unit) {
             value = vm.formData.visit_purpose,
             padding = screenPadding,
             expanded = vm.showVisitPurposeOptions,
+            isInvalid = vm.isVisitPurposeInvalid,
+            onToggle = vm::toggleVisitPurposeOptions,
             onChange = { vm.formData = vm.formData.copy(visit_purpose = it) },
-            onToggle = vm::toggleVisitPurposeOptions
         )
 
         Row(Modifier.fillMaxWidth()) {
@@ -63,7 +66,7 @@ fun Form(vm: FormViewModel = viewModel(), onSubmit: () -> Unit) {
 
         AppTextField(
             label = commentsLabel,
-            value = if (vm.formData.comments != null) vm.formData.comments!! else "" ,
+            value = vm.formData.comments ?: "" ,
             multiline = true,
             padding = screenPadding
         ) {

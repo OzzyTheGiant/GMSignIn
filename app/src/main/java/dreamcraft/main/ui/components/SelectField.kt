@@ -18,6 +18,7 @@ fun SelectField(
     value: String,
     padding: Dp,
     expanded: Boolean,
+    isInvalid: Boolean = true,
     onChange: (String) -> Unit,
     onToggle: () -> Unit
 ) {
@@ -28,6 +29,7 @@ fun SelectField(
             padding = padding,
             selectable = true,
             isSelected = expanded,
+            isInvalid = isInvalid,
             onChange = {}
         )
 
