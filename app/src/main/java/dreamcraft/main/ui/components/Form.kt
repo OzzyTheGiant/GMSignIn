@@ -49,7 +49,10 @@ fun Form(vm: FormViewModel = viewModel(), onSubmit: () -> Unit) {
             expanded = vm.showVisitPurposeOptions,
             isInvalid = vm.isVisitPurposeInvalid,
             onToggle = vm::toggleVisitPurposeOptions,
-            onChange = { vm.formData = vm.formData.copy(visit_purpose = it) },
+            onChange = {
+                vm.formData = vm.formData.copy(visit_purpose = it)
+                vm.isVisitPurposeFieldDirty = true
+            },
         )
 
         Row(Modifier.fillMaxWidth()) {
