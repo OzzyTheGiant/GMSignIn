@@ -73,7 +73,11 @@ fun Form(vm: FormViewModel = viewModel(), onSubmit: () -> Unit) {
             vm.formData = vm.formData.copy(comments = it)
         }
 
-        Button(modifier = Modifier.width(buttonWidth), onClick = onSubmit) {
+        Button(
+            enabled = vm.isFormValid,
+            modifier = Modifier.width(buttonWidth),
+            onClick = onSubmit
+        ) {
             Text(buttonLabel)
         }
     }

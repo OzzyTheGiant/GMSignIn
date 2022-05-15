@@ -13,6 +13,7 @@ class FormViewModel : ViewModel() {
     var isFullNameFieldDirty: Boolean = false
     var isVisitPurposeFieldDirty: Boolean = false
 
+    val isFormValid: Boolean get () = formData.full_name.isNotEmpty() && formData.visit_purpose.isNotEmpty()
     val isFullNameInvalid: Boolean get () = formData.full_name == "" && isFullNameFieldDirty
     val isVisitPurposeInvalid: Boolean get () = formData.visit_purpose == "" && isVisitPurposeFieldDirty
 
