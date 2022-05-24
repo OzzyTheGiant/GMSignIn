@@ -1,16 +1,23 @@
 package dreamcraft.main.viewmodels
 
+import android.location.Location
+import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dreamcraft.main.models.ClientSignInEntry
+import dreamcraft.main.models.Offices
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
 class FormViewModel : ViewModel() {
     var formData by mutableStateOf(ClientSignInEntry())
     var showVisitPurposeOptions by mutableStateOf(false)
+    var snackbarHostState = SnackbarHostState()
 
     var isFullNameFieldDirty: Boolean = false
     var isVisitPurposeFieldDirty: Boolean = false
@@ -32,5 +39,11 @@ class FormViewModel : ViewModel() {
 
     fun populateOfficeProperty() {
 
+    }
+
+    fun alert(message: String) {
+        viewModelScope.launch {
+            snackbarHostState.showSnackbar(message = message, duration = SnackbarDuration.Long)
+        }
     }
 }
