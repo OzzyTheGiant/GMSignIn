@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import dreamcraft.main.models.Offices
 import dreamcraft.main.ui.components.AppBar
 import dreamcraft.main.ui.components.Form
 import dreamcraft.main.ui.theme.GMSignInTheme
@@ -66,8 +67,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun onFetchLocationSuccess(location: Location) {
-        Log.d("APP", "latitude: " + location.latitude)
-        Log.d("APP", "longitude: " + location.longitude)
+        viewModel.formData = viewModel.formData.copy(office = Offices.find(location))
     }
 
     private fun submitFormData() {
