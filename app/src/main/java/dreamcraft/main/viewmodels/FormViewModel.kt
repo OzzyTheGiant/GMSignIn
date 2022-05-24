@@ -37,8 +37,18 @@ class FormViewModel : ViewModel() {
         )
     }
 
-    fun populateOfficeProperty() {
+    fun populateOfficeProperty(location: Location?) {
+        location?.let {
+            formData = formData.copy(office = Offices.find(it))
+            return@populateOfficeProperty
+        }
 
+        populateOfficeProperty(Offices.WESLACO)
+        alert("Location turned off. Office set manually, you can change this in Settings.")
+    }
+
+    fun populateOfficeProperty(office: Offices) {
+        formData = formData.copy(office = office.value)
     }
 
     fun alert(message: String) {

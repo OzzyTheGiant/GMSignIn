@@ -2,7 +2,6 @@ package dreamcraft.main
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -40,8 +39,7 @@ class MainActivity : ComponentActivity() {
         permissionLauncher = registerForActivityResult(RequestPermission(), ::getLocationData)
         locationClient = LocationServices.getFusedLocationProviderClient(this)
 
-        viewModel.populateOfficeProperty()
-        getLocationData()
+        getLocationData(initialCall = true)
 
         setContent {
             GMSignInTheme {
@@ -64,24 +62,29 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun getLocationData(ready: Boolean = false) {
+    /**
+     * Get Location data from FusedLocationProviderClient if user grants permission
+     * @param ready The result of the permission dialog box
+     */
+    private fun getLocationData(ready: Boolean = false, initialCall: Boolean = false) {
         val permission: String = Manifest.permission.ACCESS_COARSE_LOCATION
-        val isGranted: Int = if (ready) 1 else PackageManager.PERMISSION_GRANTED
+        val permissionCheck = if (ready) 0 else ContextCompat.checkSelfPermission(this, permission)
 
-        // Check if location permission already granted before
-        if (ContextCompat.checkSelfPermission(this, permission) == isGranted) {
-            locationClient.lastLocation.addOnSuccessListener(::onFetchLocationSuccess)
-        } else {
+        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+            locationClient.lastLocation.addOnSuccessListener(viewModel::populateOfficeProperty)
+        } else if (initialCall) {
             permissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+        } else {
+            /* TODO: always set Office manually, unless setting is changed to use location, then
+             *  prompt for permission again */
+            viewModel.populateOfficeProperty(Offices.WESLACO)
+            viewModel.alert("Location will be set manually, you can set Office in Settings")
         }
-    }
-
-    private fun onFetchLocationSuccess(location: Location) {
-        viewModel.formData = viewModel.formData.copy(office = Offices.find(location))
     }
 
     private fun submitFormData() {
         viewModel.generateTimestamp()
         Log.i("APP", viewModel.formData.toString())
+        viewModel.alert("Signed in successfully!")
     }
 }
