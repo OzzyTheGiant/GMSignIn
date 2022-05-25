@@ -6,6 +6,8 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -19,6 +21,7 @@ import dreamcraft.main.viewmodels.FormViewModel
 
 @Composable
 fun Form(vm: FormViewModel = viewModel(), onSubmit: () -> Unit) {
+    val focusManager = LocalFocusManager.current
     val screenPadding = dimensionResource(R.dimen.padding_text_field)
     val buttonWidth = dimensionResource(R.dimen.max_button_width)
     val visitPurposeLabel = stringResource(R.string.visit_purpose)
@@ -29,7 +32,7 @@ fun Form(vm: FormViewModel = viewModel(), onSubmit: () -> Unit) {
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(screenPadding)
+        modifier = Modifier.padding(screenPadding).focusRequester(vm.focusRequester)
     ) {
         AppTextField(
             label = "Full Name",
@@ -79,7 +82,10 @@ fun Form(vm: FormViewModel = viewModel(), onSubmit: () -> Unit) {
         Button(
             enabled = vm.isFormValid,
             modifier = Modifier.width(buttonWidth),
-            onClick = onSubmit
+            onClick = {
+                focusManager.clearFocus()
+                onSubmit()
+            }
         ) {
             Text(buttonLabel)
         }

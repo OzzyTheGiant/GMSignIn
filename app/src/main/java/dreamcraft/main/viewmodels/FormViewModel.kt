@@ -6,6 +6,8 @@ import androidx.compose.material.SnackbarHostState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dreamcraft.main.models.Alert
@@ -19,6 +21,7 @@ class FormViewModel : ViewModel() {
     // Form state
     var formData by mutableStateOf(ClientSignInEntry())
     var showVisitPurposeOptions by mutableStateOf(false)
+    var focusRequester = FocusRequester()
     var isFullNameFieldDirty: Boolean = false
     var isVisitPurposeFieldDirty: Boolean = false
 
