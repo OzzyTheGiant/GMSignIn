@@ -3,7 +3,6 @@ package dreamcraft.main
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
@@ -50,7 +49,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.surface) {
                     Column() {
                         AppBar(title, withSettingsButton = true)
-                        Form(viewModel, ::submitFormData)
+                        Form(viewModel, viewModel::submitClientData)
                     }
 
                     Column(
@@ -85,10 +84,5 @@ class MainActivity : ComponentActivity() {
             viewModel.populateOfficeProperty(Offices.WESLACO)
             viewModel.alert(Alert.INFO, applicationContext.getString(R.string.manual_office_set))
         }
-    }
-
-    private fun submitFormData() {
-        viewModel.generateTimestamp()
-        viewModel.alert(Alert.SUCCESS, applicationContext.getString(R.string.sign_in_success))
     }
 }
