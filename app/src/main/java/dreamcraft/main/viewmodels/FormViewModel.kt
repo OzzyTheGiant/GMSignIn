@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dreamcraft.main.models.Alert
 import dreamcraft.main.models.ClientSignInEntry
 import dreamcraft.main.models.Offices
 import kotlinx.coroutines.launch
@@ -15,16 +16,22 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class FormViewModel : ViewModel() {
+    // Form state
     var formData by mutableStateOf(ClientSignInEntry())
     var showVisitPurposeOptions by mutableStateOf(false)
-    var snackbarHostState = SnackbarHostState()
-
     var isFullNameFieldDirty: Boolean = false
     var isVisitPurposeFieldDirty: Boolean = false
 
+    // Snackbar state
+    var snackbarHostState = SnackbarHostState()
+    var alertType: Alert = Alert.INFO
+    val noLocationMessage = "Location turned off. Office set manually, you can change this in Settings."
+
+    // Form computed properties
     val isFormValid: Boolean get () = formData.full_name.isNotEmpty() && formData.visit_purpose.isNotEmpty()
     val isFullNameInvalid: Boolean get () = formData.full_name == "" && isFullNameFieldDirty
     val isVisitPurposeInvalid: Boolean get () = formData.visit_purpose == "" && isVisitPurposeFieldDirty
+
 
     fun toggleVisitPurposeOptions() {
         showVisitPurposeOptions = !showVisitPurposeOptions
@@ -44,14 +51,15 @@ class FormViewModel : ViewModel() {
         }
 
         populateOfficeProperty(Offices.WESLACO)
-        alert("Location turned off. Office set manually, you can change this in Settings.")
+        alert(Alert.INFO, noLocationMessage)
     }
 
     fun populateOfficeProperty(office: Offices) {
         formData = formData.copy(office = office.value)
     }
 
-    fun alert(message: String) {
+    fun alert(alertType: Alert, message: String) {
+        this.alertType = alertType
         viewModelScope.launch {
             snackbarHostState.showSnackbar(message = message, duration = SnackbarDuration.Long)
         }

@@ -13,12 +13,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Snackbar
 import androidx.compose.material.SnackbarHost
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import dreamcraft.main.models.Alert
 import dreamcraft.main.models.Offices
 import dreamcraft.main.ui.components.AppBar
 import dreamcraft.main.ui.components.Form
@@ -55,7 +57,9 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.fillMaxHeight(),
                         verticalArrangement = Arrangement.Bottom
                     ) {
-                        SnackbarHost(hostState = viewModel.snackbarHostState)
+                        SnackbarHost(hostState = viewModel.snackbarHostState) {
+                            Snackbar(snackbarData = it, backgroundColor = viewModel.alertType.color)
+                        }
                     }
                 }
             }
@@ -65,6 +69,7 @@ class MainActivity : ComponentActivity() {
     /**
      * Get Location data from FusedLocationProviderClient if user grants permission
      * @param ready The result of the permission dialog box
+     * @param initialCall Whether this function is called on app start up to prompt for permissions
      */
     private fun getLocationData(ready: Boolean = false, initialCall: Boolean = false) {
         val permission: String = Manifest.permission.ACCESS_COARSE_LOCATION
@@ -78,13 +83,12 @@ class MainActivity : ComponentActivity() {
             /* TODO: always set Office manually, unless setting is changed to use location, then
              *  prompt for permission again */
             viewModel.populateOfficeProperty(Offices.WESLACO)
-            viewModel.alert("Location will be set manually, you can set Office in Settings")
+            viewModel.alert(Alert.INFO, applicationContext.getString(R.string.manual_office_set))
         }
     }
 
     private fun submitFormData() {
         viewModel.generateTimestamp()
-        Log.i("APP", viewModel.formData.toString())
-        viewModel.alert("Signed in successfully!")
+        viewModel.alert(Alert.SUCCESS, applicationContext.getString(R.string.sign_in_success))
     }
 }
