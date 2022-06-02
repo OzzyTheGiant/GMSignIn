@@ -16,7 +16,6 @@ fun SelectField(
     label: String,
     options: Array<VisitPurpose>,
     value: String,
-    padding: Dp,
     expanded: Boolean,
     isInvalid: Boolean = true,
     onChange: (String) -> Unit,
@@ -26,7 +25,6 @@ fun SelectField(
         AppTextField(
             label = label,
             value = value.replace("_", " ").lowercase(),
-            padding = padding,
             selectable = true,
             isSelected = expanded,
             isInvalid = isInvalid,

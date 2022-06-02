@@ -12,7 +12,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.sp
 import dreamcraft.main.ui.theme.GMSignInTheme
 import dreamcraft.main.R
 
@@ -25,6 +28,7 @@ fun AppBar(title: String, withSettingsButton: Boolean = false) {
     val settingsBtnAltText = stringResource(R.string.settings)
     val logo = painterResource(R.drawable.gm_logo)
     val buttonModifier = Modifier.width(btnSize).height(btnSize)
+    val titleSize = dimensionResource(R.dimen.font_title_size).value.sp
 
     Column() {
         Row(
@@ -36,11 +40,17 @@ fun AppBar(title: String, withSettingsButton: Boolean = false) {
         ) {
             Row() {
                 // Group GM Icon and activity title
-                Icon(logo, contentDescription = companyName, tint = Color.Unspecified)
+                Icon(
+                    painter = logo,
+                    contentDescription = companyName,
+                    tint = Color.Unspecified,
+                    modifier = buttonModifier
+                )
 
                 Text(
                     title,
                     style = MaterialTheme.typography.h1,
+                    fontSize = titleSize,
                     modifier = Modifier.padding(start = rowPadding)
                 )
             }

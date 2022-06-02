@@ -14,11 +14,17 @@ import dreamcraft.main.R
 @Composable
 fun AppCheckBox(label: String, checked: Boolean, onChange: (Boolean) -> Unit) {
     val screenPadding = dimensionResource(R.dimen.padding_text_field)
+    val checkboxSize = dimensionResource(R.dimen.checkbox_size)
 
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Checkbox(checked = checked, onCheckedChange = onChange)
+        Checkbox(
+            checked = checked,
+            modifier = Modifier.size(checkboxSize),
+            onCheckedChange = onChange
+        )
+
         Spacer(Modifier.size(screenPadding))
         Text(label)
     }

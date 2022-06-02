@@ -17,7 +17,6 @@ import dreamcraft.main.R
 fun AppTextField(
     label: String,
     value: String,
-    padding: Dp,
     selectable: Boolean = false,
     multiline: Boolean = false,
     isSelected: Boolean = false,
@@ -26,7 +25,7 @@ fun AppTextField(
 ) {
     val requiredError = stringResource(R.string.required)
     val errorTextSize = dimensionResource(R.dimen.font_error_size).value.sp
-    var modifier = Modifier.padding(padding).fillMaxWidth()
+    var modifier = Modifier.fillMaxWidth()
 
     val colors = TextFieldDefaults.textFieldColors(
         backgroundColor = MaterialTheme.colors.background,
@@ -64,8 +63,7 @@ fun AppTextField(
             Text(
                 text = if (isInvalid) requiredError.replace("{x}", label) else "",
                 fontSize = errorTextSize,
-                color = MaterialTheme.colors.error,
-                modifier = Modifier.padding(padding)
+                color = MaterialTheme.colors.error
             )
         }
     }

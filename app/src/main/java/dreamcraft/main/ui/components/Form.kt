@@ -22,7 +22,8 @@ import dreamcraft.main.viewmodels.FormViewModel
 @Composable
 fun Form(vm: FormViewModel = viewModel(), onSubmit: () -> Unit) {
     val focusManager = LocalFocusManager.current
-    val screenPadding = dimensionResource(R.dimen.padding_text_field)
+    val fieldPadding = dimensionResource(R.dimen.padding_text_field)
+    val screenPadding = dimensionResource(R.dimen.padding_small)
     val buttonWidth = dimensionResource(R.dimen.max_button_width)
     val visitPurposeLabel = stringResource(R.string.visit_purpose)
     val dropOffLabel = stringResource(R.string.drop_off)
@@ -37,7 +38,6 @@ fun Form(vm: FormViewModel = viewModel(), onSubmit: () -> Unit) {
         AppTextField(
             label = "Full Name",
             value = vm.formData.full_name,
-            padding = screenPadding,
             isInvalid = vm.isFullNameInvalid
         ) {
             vm.formData = vm.formData.copy(full_name = it)
@@ -48,7 +48,6 @@ fun Form(vm: FormViewModel = viewModel(), onSubmit: () -> Unit) {
             label = visitPurposeLabel,
             options = VisitPurpose.values(),
             value = vm.formData.visit_purpose,
-            padding = screenPadding,
             expanded = vm.showVisitPurposeOptions,
             isInvalid = vm.isVisitPurposeInvalid,
             onToggle = vm::toggleVisitPurposeOptions,
@@ -63,7 +62,7 @@ fun Form(vm: FormViewModel = viewModel(), onSubmit: () -> Unit) {
                 vm.formData = vm.formData.copy(drop_off = it)
             }
 
-            Spacer(Modifier.size(screenPadding * 2))
+            Spacer(Modifier.size(fieldPadding * 2))
 
             AppCheckBox(pickUpLabel, vm.formData.pick_up) {
                 vm.formData = vm.formData.copy(pick_up = it)
@@ -73,8 +72,7 @@ fun Form(vm: FormViewModel = viewModel(), onSubmit: () -> Unit) {
         AppTextField(
             label = commentsLabel,
             value = vm.formData.comments ?: "" ,
-            multiline = true,
-            padding = screenPadding
+            multiline = true
         ) {
             vm.formData = vm.formData.copy(comments = it)
         }
